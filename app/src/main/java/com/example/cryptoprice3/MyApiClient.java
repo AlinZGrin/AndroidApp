@@ -1,4 +1,6 @@
 package com.example.cryptoprice3;
+import androidx.annotation.NonNull;
+
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -24,10 +26,10 @@ public class MyApiClient {
         ApiService apiService = retrofit.create(ApiService.class);
 
         // Make a GET request asynchronously
-        Call<MyResponseModel> call = apiService.getCryptoData("bitcoin", "USD", "ffb8840c-b444-41ef-b260-cfd1544312a6", "*/*");
+        Call<MyResponseModel> call = apiService.getCryptoData("bitcoin,ethereum", "USD", "ffb8840c-b444-41ef-b260-cfd1544312a6", "*/*");
         call.enqueue(new Callback<MyResponseModel>() {
             @Override
-            public void onResponse(Call<MyResponseModel> call, Response<MyResponseModel> response) {
+            public void onResponse(@NonNull Call<MyResponseModel> call, @NonNull Response<MyResponseModel> response) {
                 if (response.isSuccessful()) {
                     callback.onDataReceived(response.body(), response.code());
                 } else {

@@ -11,7 +11,7 @@ import org.json.JSONException;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private static final String BASE_URL = "https://pro-api.coinmarketcap.com/v2/";
+    private static final String BASE_URL = "https://pro-api.coinmarketcap.com/";
     private MyResponseModel myResponseModel;
     // Define a callback interface
 

@@ -8,7 +8,7 @@ import retrofit2.http.Query;
 
 public interface ApiService {
     @Headers({"Content-Type: text/plain"})
-    @GET("cryptocurrency/quotes/latest")
+    @GET("v2/cryptocurrency/quotes/latest")
 
     Call<MyResponseModel> getCryptoData(
 
