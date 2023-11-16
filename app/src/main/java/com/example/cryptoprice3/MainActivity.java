@@ -37,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
                                            TextView ETHName = findViewById(R.id.EthPriceName);
                                            TextView price = findViewById(R.id.BTCPrice);
                                            TextView ETHprice = findViewById(R.id.ETHPrice);
-                                           String btcName = getString(R.string.BTCName,String.valueOf(data.data.getOne().getName()));
+                                           //String btcName = getString(R.string.BTCName,String.valueOf(data.data.getOne().getName()));
                                            String CurrentPrice = getString(R.string.bitcoinPrice,"$",String.valueOf(data.data.getOne().getQuote().getUSD().getPrice()));
-                                           BTCName.setText(btcName);
+                                           //BTCName.setText(btcName);
                                            price.setText(CurrentPrice);
                                        }
                 @Override
