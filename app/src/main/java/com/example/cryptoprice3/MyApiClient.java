@@ -1,0 +1,44 @@
+package com.example.cryptoprice3;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class MyApiClient {
+
+    private static final String BASE_URL = "https://pro-api.coinmarketcap.com/v2/";
+
+    public void fetchDataAsync(MyCallback callback) {
+        // Retrofit setup
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+
+        // ApiService interface
+        ApiService apiService = retrofit.create(ApiService.class);
+
+        // Make a GET request asynchronously
+        Call<MyResponseModel> call = apiService.getCryptoData("bitcoin", "USD", "ffb8840c-b444-41ef-b260-cfd1544312a6", "*/*");
+        call.enqueue(new Callback<MyResponseModel>() {
+            @Override
+            public void onResponse(Call<MyResponseModel> call, Response<MyResponseModel> response) {
+                if (response.isSuccessful()) {
+                    callback.onDataReceived(response.body(), response.code());
+                } else {
+                    callback.onFailure(new Exception("API call unsuccessful"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyResponseModel> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+}

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">CryptoPrice3</string>
+    <string name="bitcoinPrice">%1$s%2$s</string>
+    <string name="ethereumPrice">%1$s%2$s</string>
+    <string name="BTCName">%1$s</string>
+    <string name="EName">%1$s</string>
+</resources>
