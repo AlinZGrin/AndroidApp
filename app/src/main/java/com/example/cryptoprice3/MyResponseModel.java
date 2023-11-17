@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+
 public class MyResponseModel {
 
     @SerializedName("status")
@@ -14,80 +16,72 @@ public class MyResponseModel {
     public void setStatus(Status status){
         this.status=status;
     }
-    public class Status {
+    public static class Status {
         @SerializedName("timestamp")
         private Timestamp timestamp;
 
         public Timestamp getTimestamp() {
             return timestamp;
         }
-         public void setStatus(Timestamp timestamp){
+        public void setStatus(Timestamp timestamp){
             this.timestamp=timestamp;
-         }
+        }
     }
 
     @SerializedName("data")
-    public Data data;
-    public Data getData() {
+    private Map<String, CryptoCurrency> data;
+    public Map<String, CryptoCurrency> getData() {
         return data;
     }
-    public void setData(Data data){
+    public void setData(Map<String, CryptoCurrency> data){
         this.data=data;
     }
-    public class Data {
-        @SerializedName("1")
-        private One one;
+    public static class CryptoCurrency {
+        @SerializedName("id")
+        private int id;
 
-        public One getOne() {
-            return one;
-        }
-        public void setOne(One one){
-            this.one=one;
-        }
-
-    }
-
-    public class One {
         @SerializedName("name")
         private String name;
-        @SerializedName("quote")
-        private Quote quote;
         public String getName() {
             return name;
         }
-        public void setQuote(String name){
+        public void setName(String name){
             this.name=name;
         }
-        public Quote getQuote() {
-            return quote;
-        }
-        public void setQuote(Quote quote){
-            this.quote=quote;
-        }
-    }
 
-    public class Quote {
-        @SerializedName("USD")
-        private USD usd;
-
-        public USD getUSD() {
-            return usd;
-        }
-        public void setUSD(USD usd){
-            this.usd=usd;
-        }
+    @SerializedName("quote")
+    private Quote quote;
+    public Quote getQuote() {
+        return quote;
     }
-    public class USD {
-        @SerializedName("price")
-        private float price;
-
-        public float getPrice() {
-            return price;
-        }
-        public void setPrice(float price){
-            this.price=price;
-        }
+    public void setQuote(Quote quote){
+        this.quote=quote;
     }
+}
+
+
+public static class Quote {
+    @SerializedName("USD")
+    private USD usd;
+
+    public USD getUSD() {
+        return usd;
+    }
+    public void setUSD(USD usd){
+        this.usd=usd;
+    }
+}
+public static class USD {
+    @SerializedName("price")
+    private float price;
+
+    public float getPrice() {
+        return price;
+    }
+    public void setPrice(float price){
+        this.price=price;
+    }
+}
 }
 
 

@@ -38,7 +38,7 @@ public class MyApiClient {
             }
 
             @Override
-            public void onFailure(Call<MyResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<MyResponseModel> call, Throwable t) {
                 callback.onFailure(t);
             }
         });
