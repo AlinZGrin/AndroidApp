@@ -4,8 +4,8 @@
     <string name="ethereumPrice">%1$s%2$s</string>
     <string name="btc24change">%1$s%2$s</string>
     <string name="eth24change">%1$s%2$s</string>
-    <string name="btc24changetitle">24 Hours change</string>
-    <string name="eth24changetitle">24 Hours change</string>
+    <string name="btc24changetitle">24 HR</string>
+    <string name="eth24changetitle">24 HR</string>
     <string name="BTCName">%1$s</string>
     <string name="EName">%1$s</string>
     <string name="eth_price">ETH Price</string>

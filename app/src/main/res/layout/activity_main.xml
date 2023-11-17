@@ -10,20 +10,22 @@
 
     <TextView
         android:id="@+id/ETH24PercentChange"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="135dp"
+        android:layout_height="40dp"
         android:layout_marginStart="20dp"
         android:text="@string/eth24changetitle"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.153"
         app:layout_constraintStart_toEndOf="@+id/ETHPrice"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.443" />
+        app:layout_constraintVertical_bias="0.445" />
 
     <TextView
         android:id="@+id/BTC24PercentChange"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="133dp"
+        android:layout_height="27dp"
         android:layout_marginStart="144dp"
         android:text="@string/btc24changetitle"
         android:textSize="24sp"
@@ -34,7 +36,7 @@
 
     <TextView
         android:id="@+id/BitconPriceName"
-        android:layout_width="wrap_content"
+        android:layout_width="96dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="208dp"
         android:textSize="24sp"
@@ -45,7 +47,7 @@
 
     <TextView
         android:id="@+id/EthPriceName"
-        android:layout_width="wrap_content"
+        android:layout_width="110dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="316dp"
         android:textSize="24sp"
@@ -56,7 +58,7 @@
 
     <TextView
         android:id="@+id/ETHPrice"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/eth_price"
@@ -68,7 +70,7 @@
 
     <TextView
         android:id="@+id/BTCPrice"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/btc_price"
@@ -80,7 +82,7 @@
 
     <Button
         android:id="@+id/buttonSubmit"
-        android:layout_width="wrap_content"
+        android:layout_width="144dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="484dp"
 
