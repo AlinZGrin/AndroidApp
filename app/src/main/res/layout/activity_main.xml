@@ -39,7 +39,7 @@
 
     <TextView
         android:id="@+id/BitconPriceName"
-        android:layout_width="96dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="204dp"
@@ -49,7 +49,7 @@
 
     <TextView
         android:id="@+id/EthPriceName"
-        android:layout_width="110dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="308dp"
