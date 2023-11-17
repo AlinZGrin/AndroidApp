@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.json.JSONException;
 
 import java.util.Map;
+import java.lang.Math;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -44,13 +45,9 @@ public class MainActivity extends AppCompatActivity {
                                            MyResponseModel.CryptoCurrency ethereum  = cryptoCurrencyMap.get("1027");
                                            String btcName = getString(R.string.BTCName,bitcoin.getName());
                                            String ethName = getString(R.string.EName,ethereum.getName());
-                                           String btcPrice = getString(R.string.bitcoinPrice,"$",String.valueOf(bitcoin.getQuote().getUSD().getPrice()));
-                                           String ethPrice = getString(R.string.ethereumPrice,"$",String.valueOf(ethereum.getQuote().getUSD().getPrice()));
+                                           String btcPrice = getString(R.string.bitcoinPrice,"$",String.valueOf((double)Math.round(bitcoin.getQuote().getUSD().getPrice()* 100.0) / 100.0));
+                                           String ethPrice = getString(R.string.ethereumPrice,"$",String.valueOf((double)Math.round(ethereum.getQuote().getUSD().getPrice()* 100.0) / 100.0));
 
-                                           //String bitName = getString(R.string.BTCName);
-                                          // String etName = getString(R.string.EName);
-                                          // String BTCPrice = getString(R.string.bitcoinPrice,"$",btcPrice);
-                                         //  String ETHPrice = getString(R.string.ethereumPrice,"$",ethPrice);
                                            Log.d(TAG, "ethName: " + ethName);
                                            BTCName.setText(btcName);
                                            ETHName.setText(ethName);
