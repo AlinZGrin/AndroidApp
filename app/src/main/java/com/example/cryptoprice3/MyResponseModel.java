@@ -2,8 +2,6 @@ package com.example.cryptoprice3;
 import com.google.gson.annotations.SerializedName;
 
 import java.sql.Timestamp;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Map;
 
 public class MyResponseModel {
@@ -74,13 +72,23 @@ public static class Quote {
 public static class USD {
     @SerializedName("price")
     private float price;
-
     public float getPrice() {
         return price;
     }
     public void setPrice(float price){
         this.price=price;
     }
+
+    @SerializedName("percent_change_24h")
+    private float percent_change_24h;
+
+    public float getpercent_change_24h() {
+        return percent_change_24h;
+    }
+    public void setpercent_change_24h(float percent_change_24h){
+        this.percent_change_24h=percent_change_24h;
+    }
+
 }
 }
 

@@ -1,4 +1,5 @@
 package com.example.cryptoprice3;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
                                            TextView ETHName = findViewById(R.id.EthPriceName);
                                            TextView price = findViewById(R.id.BTCPrice);
                                            TextView ETHprice = findViewById(R.id.ETHPrice);
+                                           TextView BTC24 = findViewById(R.id.BTC24PercentChange);
+                                           TextView ETH24 = findViewById(R.id.ETH24PercentChange);
                                            Map<String, MyResponseModel.CryptoCurrency> cryptoCurrencyMap = data.getData();
                                            MyResponseModel.CryptoCurrency bitcoin = cryptoCurrencyMap.get("1");
                                            MyResponseModel.CryptoCurrency ethereum  = cryptoCurrencyMap.get("1027");
@@ -47,12 +50,25 @@ public class MainActivity extends AppCompatActivity {
                                            String ethName = getString(R.string.EName,ethereum.getName());
                                            String btcPrice = getString(R.string.bitcoinPrice,"$",String.valueOf((double)Math.round(bitcoin.getQuote().getUSD().getPrice()* 100.0) / 100.0));
                                            String ethPrice = getString(R.string.ethereumPrice,"$",String.valueOf((double)Math.round(ethereum.getQuote().getUSD().getPrice()* 100.0) / 100.0));
-
+                                           String btc24Change = getString(R.string.btc24change,String.valueOf((double)Math.round(bitcoin.getQuote().getUSD().getpercent_change_24h()* 100.0) / 100.0),"%");
+                                           String eth24Change = getString(R.string.eth24change,String.valueOf((double)Math.round(ethereum.getQuote().getUSD().getpercent_change_24h()* 100.0) / 100.0),"%");
                                            Log.d(TAG, "ethName: " + ethName);
                                            BTCName.setText(btcName);
                                            ETHName.setText(ethName);
                                            price.setText(btcPrice);
                                            ETHprice.setText(ethPrice);
+                                           BTC24.setText(btc24Change);
+                                           if ( bitcoin.getQuote().getUSD().getpercent_change_24h() < 0)
+                                           {BTC24.setTextColor(Color.parseColor("#FF0000"));}
+                                           else if (bitcoin.getQuote().getUSD().getpercent_change_24h() > 0) {
+                                               BTC24.setTextColor(Color.parseColor("#00FF00"));
+                                           }
+                                           ETH24.setText(eth24Change);
+                                           if ( ethereum.getQuote().getUSD().getpercent_change_24h() < 0)
+                                           {ETH24.setTextColor(Color.parseColor("#FF0000"));}
+                                           else if (ethereum.getQuote().getUSD().getpercent_change_24h() > 0) {
+                                               ETH24.setTextColor(Color.parseColor("#00FF00"));
+                                           }
                                        }
                 @Override
                 public void onFailure(Throwable t) {
