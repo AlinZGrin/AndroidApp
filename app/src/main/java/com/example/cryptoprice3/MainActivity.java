@@ -152,6 +152,10 @@ public class MainActivity extends AppCompatActivity {
                     animator.addUpdateListener(animation -> {
                         float currentPrice = (float) animation.getAnimatedValue();
                         priceTextView.setText(String.format(Locale.US,"$%.2f", currentPrice));
+                        if (initialPrice<finalPrice)
+                        {priceTextView.setTextColor(Color.parseColor("#00FF00"));}
+                        else if (finalPrice<initialPrice)
+                        {priceTextView.setTextColor(Color.parseColor("#FF0000"));}
                     });
                     animator.start();
                 }
