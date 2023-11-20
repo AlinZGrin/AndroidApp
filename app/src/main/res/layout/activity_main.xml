@@ -9,6 +9,36 @@
 
 
     <TextView
+        android:id="@+id/dayChangeTitle_textView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="24 Hours % change"
+        app:layout_constraintBottom_toTopOf="@+id/BTC24PercentChange"
+        app:layout_constraintEnd_toEndOf="@+id/BTC24PercentChange"
+        app:layout_constraintStart_toStartOf="@+id/BTC24PercentChange" />
+
+    <TextView
+        android:id="@+id/priceTitle_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="Price"
+        app:layout_constraintBottom_toTopOf="@+id/BTCPrice"
+        app:layout_constraintEnd_toEndOf="@+id/BTCPrice"
+        app:layout_constraintStart_toStartOf="@+id/BTCPrice" />
+
+    <TextView
+        android:id="@+id/nameTitle_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="10dp"
+        android:text="Coin Name"
+        app:layout_constraintBottom_toTopOf="@+id/BitconPriceName"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
         android:id="@+id/ETH24PercentChange"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
