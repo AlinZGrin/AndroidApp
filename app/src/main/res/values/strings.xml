@@ -11,4 +11,6 @@
     <string name="eth_price">ETH Price</string>
     <string name="btc_price">BTC Price</string>
     <string name="submit">Submit</string>
+    <string name="initialBTCPrice">%1$s%2s</string>
+    <string name="initialETHPrice">%1$s%2s</string>
 </resources>
