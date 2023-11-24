@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import java.sql.Timestamp;
 import java.util.Map;
 
-public class MyResponseModel {
+public class QuoteLatestResponseModel {
 
     @SerializedName("status")
     public Status status;

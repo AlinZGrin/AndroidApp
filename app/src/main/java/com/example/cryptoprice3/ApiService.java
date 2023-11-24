@@ -10,7 +10,7 @@ public interface ApiService {
     @Headers({"Content-Type: text/plain"})
     @GET("cryptocurrency/quotes/latest")
 
-    Call<MyResponseModel> getCryptoData(
+    Call<QuoteLatestResponseModel> getCryptoData(
 
             @Query("slug") String slug,
             @Query("convert") String convert,

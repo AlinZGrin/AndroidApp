@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private static final String BASE_URL = "https://pro-api.coinmarketcap.com/v2/";
-    private MyResponseModel myResponseModel;
+    private QuoteLatestResponseModel myResponseModel;
     // Define a callback interface
     private SharedPreferences sharedPreferences;
     @Override
@@ -69,11 +69,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void onBtnClick (View view) throws JSONException {
 
+        MarketChartApiClient marketChartApiClient = new MarketChartApiClient();
+        marketChartApiClient.fetchDataAsync(new ChartCallback() {
+        @Override
+        public void onDataReceived(MarketChartApiResponseModel data, int code) {
+            Log.d(TAG, "Chart API Response: " + code);
+            Log.d(TAG,"Chart data point: "+ data.getPrices());
+
+    }
+
+    @Override
+    public void onFailure(Throwable t) {
+
+    }
+});
 
             MyApiClient myApiClient = new MyApiClient();
             myApiClient.fetchDataAsync(new MyCallback() {
                                        @Override
-                                       public void onDataReceived(MyResponseModel data, int code) {
+                                       public void onDataReceived(QuoteLatestResponseModel data, int code) {
 
 
 
@@ -84,9 +98,9 @@ public class MainActivity extends AppCompatActivity {
                                            TextView ETHprice = findViewById(R.id.ETHPrice);
                                            TextView BTC24 = findViewById(R.id.BTC24PercentChange);
                                            TextView ETH24 = findViewById(R.id.ETH24PercentChange);
-                                           Map<String, MyResponseModel.CryptoCurrency> cryptoCurrencyMap = data.getData();
-                                           MyResponseModel.CryptoCurrency bitcoin = cryptoCurrencyMap.get("1");
-                                           MyResponseModel.CryptoCurrency ethereum  = cryptoCurrencyMap.get("1027");
+                                           Map<String, QuoteLatestResponseModel.CryptoCurrency> cryptoCurrencyMap = data.getData();
+                                           QuoteLatestResponseModel.CryptoCurrency bitcoin = cryptoCurrencyMap.get("1");
+                                           QuoteLatestResponseModel.CryptoCurrency ethereum  = cryptoCurrencyMap.get("1027");
                                            assert bitcoin != null;
                                            String btcName = getString(R.string.BTCName,bitcoin.getName());
                                            assert ethereum != null;
@@ -100,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
                                            String btc24Change = getString(R.string.btc24change,String.valueOf(btc24c),"%");
                                            String eth24Change = getString(R.string.eth24change,String.valueOf(eth24c),"%");
                                            Log.d(TAG, "ethName: " + ethName);
+                                           Log.d(TAG, "btcName: " + btcName);
                                            BTCName.setText(btcName);
                                            ETHName.setText(ethName);
                                            price.setText(btcPrice);

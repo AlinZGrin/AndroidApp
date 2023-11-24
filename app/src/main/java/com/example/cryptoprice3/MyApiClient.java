@@ -1,9 +1,5 @@
 package com.example.cryptoprice3;
 import androidx.annotation.NonNull;
-
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,15 +17,14 @@ public class MyApiClient {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-
         // ApiService interface
         ApiService apiService = retrofit.create(ApiService.class);
 
         // Make a GET request asynchronously
-        Call<MyResponseModel> call = apiService.getCryptoData("bitcoin,ethereum", "USD", "ffb8840c-b444-41ef-b260-cfd1544312a6", "*/*");
-        call.enqueue(new Callback<MyResponseModel>() {
+        Call<QuoteLatestResponseModel> call = apiService.getCryptoData("bitcoin,ethereum", "USD", "ffb8840c-b444-41ef-b260-cfd1544312a6", "*/*");
+        call.enqueue(new Callback<QuoteLatestResponseModel>() {
             @Override
-            public void onResponse(@NonNull Call<MyResponseModel> call, @NonNull Response<MyResponseModel> response) {
+            public void onResponse(@NonNull Call<QuoteLatestResponseModel> call, @NonNull Response<QuoteLatestResponseModel> response) {
                 if (response.isSuccessful()) {
                     callback.onDataReceived(response.body(), response.code());
                 } else {
@@ -38,7 +33,7 @@ public class MyApiClient {
             }
 
             @Override
-            public void onFailure(@NonNull Call<MyResponseModel> call, Throwable t) {
+            public void onFailure(@NonNull Call<QuoteLatestResponseModel> call, Throwable t) {
                 callback.onFailure(t);
             }
         });
