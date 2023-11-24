@@ -43,17 +43,17 @@ public class MarketChartApiClient {
                      {
                         List<Double> datapoint = dataPoints.get(i);
                         Double d =  datapoint.get(0);
-
+                        Double p =  datapoint.get(1);
                          if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                              LocalDateTime dateTime = LocalDateTime.ofInstant(
                                  Instant.ofEpochMilli(Math.round(d)),
                                  ZoneId.of("EST")
 
                          );
-                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd");
+                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
                              String formattedDateTime = dateTime.format(formatter);
 
-                             System.out.println(formattedDateTime);
+                             System.out.println(formattedDateTime+" "+p);
                          }
 
 
