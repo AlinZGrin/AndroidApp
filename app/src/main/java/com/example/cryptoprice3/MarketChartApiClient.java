@@ -1,11 +1,10 @@
 package com.example.cryptoprice3;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.chrono.ChronoLocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -25,10 +24,10 @@ public class MarketChartApiClient {
             .build();
 
     // Create an instance of the CoinGeckoApi interface
-    CoinGeckoApi coinGeckoApi = retrofit.create(CoinGeckoApi.class);
+    CoinGeckoApiBitcoin coinGeckoApiBitcoin = retrofit.create(CoinGeckoApiBitcoin.class);
 
     // Make the API call
-    Call<MarketChartApiResponseModel> call = coinGeckoApi.getMarketChart("usd", 7, "daily", 2);
+    Call<MarketChartApiResponseModel> call = coinGeckoApiBitcoin.getMarketChart("usd", 30, "daily", 2);
 
     // Enqueue the call to execute asynchronously
         call.enqueue(new Callback<MarketChartApiResponseModel>() {
@@ -37,31 +36,16 @@ public class MarketChartApiClient {
             if (response.isSuccessful()) {
                 MarketChartApiResponseModel apiResponse = response.body();
                 // Handle the response data here
-                assert response.body() != null;
-                List<List<Double>> dataPoints = response.body().getPrices();
-                for (int i=0;i<dataPoints.size();i++)
-                     {
-                        List<Double> datapoint = dataPoints.get(i);
-                        Double d =  datapoint.get(0);
-                        Double p =  datapoint.get(1);
-                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                             LocalDateTime dateTime = LocalDateTime.ofInstant(
-                                 Instant.ofEpochMilli(Math.round(d)),
-                                 ZoneId.of("EST")
 
-                         );
-                             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-                             String formattedDateTime = dateTime.format(formatter);
-
-                             System.out.println(formattedDateTime+" "+p);
-                         }
-
-
-                     }
 
                 System.out.println("Prices: " + apiResponse.getPrices().get(0));
             } else {
                 System.out.println("Request failed. Code: " + response.code());
+            }
+            if (response.isSuccessful()) {
+                callback.onDataReceived(response.body(), response.code());
+            } else {
+                callback.onFailure(new Exception("API call unsuccessful"));
             }
         }
 
@@ -71,5 +55,65 @@ public class MarketChartApiClient {
         }
     });
 }
+
+
+    public void fetchDataAsyncEthereum(ChartCallback callback) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        // Create an instance of the CoinGeckoApi interface
+        CoinGeckoApiEthereum coinGeckoApiEthereum = retrofit.create(CoinGeckoApiEthereum.class);
+
+        // Make the API call
+        Call<MarketChartApiResponseModel> call = coinGeckoApiEthereum.getMarketChart("usd", 30, "daily", 2);
+
+        // Enqueue the call to execute asynchronously
+        call.enqueue(new Callback<MarketChartApiResponseModel>() {
+            @Override
+            public void onResponse(Call<MarketChartApiResponseModel> call, Response<MarketChartApiResponseModel> response) {
+                if (response.isSuccessful()) {
+                    MarketChartApiResponseModel apiResponse = response.body();
+                    // Handle the response data here
+                    assert response.body() != null;
+                    List<List<Double>> dataPoints = response.body().getPrices();
+                    for (int i=0;i<dataPoints.size();i++)
+                    {
+                        List<Double> datapoint = dataPoints.get(i);
+                        Double d =  datapoint.get(0);
+                        Double p =  datapoint.get(1);
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                            LocalDateTime dateTime = LocalDateTime.ofInstant(
+                                    Instant.ofEpochMilli(Math.round(d)),
+                                    ZoneId.of("EST")
+
+                            );
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+                            String formattedDateTime = dateTime.format(formatter);
+
+                            System.out.println(formattedDateTime+" "+p);
+                        }
+
+
+                    }
+
+                    System.out.println("Prices: " + apiResponse.getPrices().get(0));
+                } else {
+                    System.out.println("Request failed. Code: " + response.code());
+                }
+                if (response.isSuccessful()) {
+                    callback.onDataReceived(response.body(), response.code());
+                } else {
+                    callback.onFailure(new Exception("API call unsuccessful"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MarketChartApiResponseModel> call, Throwable t) {
+                System.out.println("Request failed. Error: " + t.getMessage());
+            }
+        });
+    }
 }
 
