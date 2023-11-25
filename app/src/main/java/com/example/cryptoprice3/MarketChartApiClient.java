@@ -1,4 +1,7 @@
 package com.example.cryptoprice3;
+import android.content.Context;
+import android.widget.Toast;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -15,7 +18,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MarketChartApiClient {
     // Create Retrofit instance
+    private Context context;
 
+    // Constructor
+    public MarketChartApiClient(Context context) {
+        this.context = context;
+    }
+
+    // Setter method
+    public void setContext(Context context) {
+        this.context = context;
+    }
     private static final String  baseUrl = "https://api.coingecko.com/api/v3/";
     public void fetchDataAsync(ChartCallback callback) {
     Retrofit retrofit = new Retrofit.Builder()
@@ -101,7 +114,22 @@ public class MarketChartApiClient {
                     System.out.println("Prices: " + apiResponse.getPrices().get(0));
                 } else {
                     System.out.println("Request failed. Code: " + response.code());
-                }
+                    Callback<MarketChartApiResponseModel> context=this;
+                    if (response.code() == 429 && context != null) {
+
+
+                            showToast("Too many requests. Please try again later.");
+                        } else {
+                            showToast("An error occurred. Please try again.");
+                        }
+
+
+
+
+
+
+                    }
+
                 if (response.isSuccessful()) {
                     callback.onDataReceived(response.body(), response.code());
                 } else {
@@ -115,5 +143,9 @@ public class MarketChartApiClient {
             }
         });
     }
-}
 
+    private void showToast(String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+
+}
+}

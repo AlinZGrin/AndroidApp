@@ -35,7 +35,7 @@ import java.lang.Math;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
-
+import android.widget.Toast;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
         BTCName.performClick();
         ETHName.performClick();
+
         handler = new Handler();
         handler.post(runnable); // Start the recurring task immediately
 
@@ -110,15 +111,23 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             handler.postDelayed(this, INTERVAL);
         }
     };
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Stop the recurring task when the activity is destroyed
+        handler.removeCallbacks(runnable);
+    }
     public void onBTCNameBtnClick(View view) throws JSONException {
 
-        MarketChartApiClient marketChartApiClient = new MarketChartApiClient();
+
+        MarketChartApiClient marketChartApiClient = new MarketChartApiClient(this);
 
         marketChartApiClient.fetchDataAsync(new ChartCallback() {
             @Override
             public void onDataReceived(MarketChartApiResponseModel data, int code) {
                 Log.d(TAG, "Chart API Response: " + code);
                 Log.d(TAG, "Chart data point: " + data.getPrices());
+
                 assert data.getPrices() != null;
                 List<List<Double>> dataPoints = data.getPrices();
                 List<List<String>> dataPointsOut = new ArrayList<>();
@@ -153,11 +162,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             @Override
             public void onFailure(Throwable t) {
 
+
             }
         });
     }
         public void onETHNameBtnClick(View view) throws JSONException {
-            MarketChartApiClient marketChartApiClient = new MarketChartApiClient();
+            MarketChartApiClient marketChartApiClient = new MarketChartApiClient(this);
             marketChartApiClient.fetchDataAsyncEthereum(new ChartCallback() {
                 @Override
                 public void onDataReceived(MarketChartApiResponseModel data, int code) {

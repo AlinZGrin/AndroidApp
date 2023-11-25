@@ -42,11 +42,11 @@ public class LineGraphView extends View {
         linePaint.setStrokeWidth(10);
 
         textPaint = new Paint();
-        textPaint.setColor(Color.BLACK);
+        textPaint.setColor(Color.LTGRAY);
         textPaint.setTextSize(20);
 
         axisPaint = new Paint();
-        axisPaint.setColor(Color.BLACK);
+        axisPaint.setColor(Color.LTGRAY);
         axisPaint.setStrokeWidth(3);
     }
 
