@@ -39,7 +39,7 @@ public class LineGraphView extends View {
         linePaint = new Paint();
         linePaint.setColor(Color.BLUE);
         linePaint.setStyle(Paint.Style.STROKE);
-        linePaint.setStrokeWidth(5);
+        linePaint.setStrokeWidth(10);
 
         textPaint = new Paint();
         textPaint.setColor(Color.BLACK);
@@ -87,8 +87,20 @@ public class LineGraphView extends View {
         for (int i = 1; i < dataPoints.size(); i++) {
             float x = i * xInterval;
             float y = height - (float) ((dataPoints.get(i).getValue() - minPrice) * yInterval);
-            path.lineTo(x, y);
+
+            // Smooth the line using cubic Bézier curve
+            float prevX = (i - 1) * xInterval;
+            float prevY = height - (float) ((dataPoints.get(i - 1).getValue() - minPrice) * yInterval);
+            float c1x = prevX + xInterval / 2;
+            float c1y = prevY;
+            float c2x = x - xInterval / 2;
+            float c2y = y;
+
+            path.cubicTo(c1x, c1y, c2x, c2y, x, y);
         }
+
+        // Draw the smoothed line graph
+        canvas.drawPath(path, linePaint);
 
         // Draw X-axis
         canvas.drawLine(0, height, width, height, axisPaint);
@@ -97,7 +109,7 @@ public class LineGraphView extends View {
         canvas.drawLine(0, 0, 0, height, axisPaint);
 
         // Draw labels on Y-axis
-        for (int i = 0; i <= 5; i++) { // Adjust the number of labels as needed
+        for (int i = 0; i <= 5; i++) {
             float priceLabel = (float) (minPrice + i * ((maxPrice - minPrice) / 5));
             float yLabel = height - i * (height / 5);
             canvas.drawText(String.format(Locale.US,"%.2f", priceLabel), -textPaint.measureText(String.format(Locale.US,"%.2f", priceLabel)) - 10, yLabel, textPaint);
@@ -109,10 +121,8 @@ public class LineGraphView extends View {
             float y = height + 40;
             canvas.drawText(dataPoints.get(i).getLabel(), x, y, textPaint);
         }
-
-        // Draw the line graph
-        canvas.drawPath(path, linePaint);
     }
+
 
     public static class DataPoint {
         private String label;
