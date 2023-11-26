@@ -40,8 +40,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
-
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final String BASE_URL = "https://pro-api.coinmarketcap.com/v2/";
     private QuoteLatestResponseModel myResponseModel;
@@ -154,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                     }
                     lineGraphView.setDataPoints(dataPoints1);
+                    lineGraphView.setCoinName("Bitcoin");
 
                 }
 
@@ -198,7 +198,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             System.out.println("DataPointsOut: " + dataPointsOut);
 
                         }
+                        String coinName = "Ethereum";
                         lineGraphView.setDataPoints(dataPoints1);
+                        lineGraphView.setCoinName("Ethereum");
 
                     }
 
@@ -303,32 +305,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 }
             });
         }
-    @Override
-    public void onRefresh() {
-        // Perform the refresh operation (e.g., reload data, restart activity)
-        // For demonstration, let's just restart the activity after a delay
-        refreshWithDelay();
-    }
 
-    private void refreshWithDelay() {
-        // Simulate some delay before restarting the activity
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // Restart the activity
-                        restartActivity();
-                    }
-                },
-                1000 // Adjust the delay time as needed
-        );
-    }
 
-    private void restartActivity() {
-        // Create a new intent to start the current activity
-        Intent intent = getIntent();
-        finish(); // Finish the current instance of the activity
-        startActivity(intent); // Start a new instance of the activity
-    }
+
 
 }
 

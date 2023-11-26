@@ -9,6 +9,8 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,9 +23,12 @@ public class LineGraphView extends View {
     private List<DataPoint> dataPoints;
     private Paint linePaint;
     private Paint textPaint;
+
+    private Paint titlePaint;
     private Paint axisPaint;
     private double minPrice;
     private double maxPrice;
+    private String coinName;
 
     public LineGraphView(Context context) {
         super(context);
@@ -43,7 +48,13 @@ public class LineGraphView extends View {
 
         textPaint = new Paint();
         textPaint.setColor(Color.LTGRAY);
-        textPaint.setTextSize(20);
+        textPaint.setTextSize(40);
+
+        titlePaint = new Paint();
+        titlePaint.setColor(Color.LTGRAY);
+        titlePaint.setAntiAlias(true);
+        titlePaint.setFakeBoldText(true);
+        titlePaint.setTextSize(80);
 
         axisPaint = new Paint();
         axisPaint.setColor(Color.LTGRAY);
@@ -54,6 +65,10 @@ public class LineGraphView extends View {
         this.dataPoints = dataPoints;
         calculateMinMaxPrices();
         invalidate(); // Trigger redraw when data changes
+    }
+    public void setCoinName(String coinName) {
+        this.coinName = coinName;
+
     }
 
     private void calculateMinMaxPrices() {
@@ -97,6 +112,11 @@ public class LineGraphView extends View {
             float c2y = y;
 
             path.cubicTo(c1x, c1y, c2x, c2y, x, y);
+
+            // Draw labels on X-axis beside data points
+            String label = dataPoints.get(i).getLabel();
+            float labelWidth = textPaint.measureText(label);
+            canvas.drawText(label, x - labelWidth / 2, height + 40, textPaint);
         }
 
         // Draw the smoothed line graph
@@ -108,25 +128,32 @@ public class LineGraphView extends View {
         // Draw Y-axis
         canvas.drawLine(0, 0, 0, height, axisPaint);
 
-        // Draw labels on Y-axis
+        // Draw labels on Y-axis beside data points
         for (int i = 0; i <= 5; i++) {
             float priceLabel = (float) (minPrice + i * ((maxPrice - minPrice) / 5));
             float yLabel = height - i * (height / 5);
-            canvas.drawText(String.format(Locale.US,"%.2f", priceLabel), -textPaint.measureText(String.format(Locale.US,"%.2f", priceLabel)) - 10, yLabel, textPaint);
+
+            String formattedLabel = String.format("%.2f", priceLabel);
+            float labelWidth = textPaint.measureText(formattedLabel);
+            canvas.drawText(formattedLabel, -labelWidth - 10, yLabel, textPaint);
         }
 
-        // Draw labels on X-axis
-        for (int i = 1; i < dataPoints.size(); i++) {
-            float x = i * xInterval;
-            float y = height + 40;
-            canvas.drawText(dataPoints.get(i).getLabel(), x, y, textPaint);
-        }
+        // Draw coin name on top of the chart
+
+        float coinNameWidth = titlePaint.measureText(coinName);
+        float coinNameX = (width - coinNameWidth) / 2;
+        float coinNameY = 80; // Adjust the Y-coordinate as needed
+        canvas.drawText(coinName, coinNameX, coinNameY, titlePaint);
     }
 
 
+
+
+
+
     public static class DataPoint {
-        private String label;
-        private double value;
+        public final String label;
+        public final double value;
 
         public DataPoint(String label, double value) {
             this.label = label;
