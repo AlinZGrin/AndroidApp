@@ -5,16 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -66,9 +59,9 @@ public class LineGraphView extends View {
         calculateMinMaxPrices();
         invalidate(); // Trigger redraw when data changes
     }
+
     public void setCoinName(String coinName) {
         this.coinName = coinName;
-
     }
 
     private void calculateMinMaxPrices() {
@@ -113,7 +106,7 @@ public class LineGraphView extends View {
 
             path.cubicTo(c1x, c1y, c2x, c2y, x, y);
 
-            // Draw labels on X-axis beside data points
+            // Draw labels on X-axis inside the chart
             String label = dataPoints.get(i).getLabel();
             float labelWidth = textPaint.measureText(label);
             canvas.drawText(label, x - labelWidth / 2, height + 40, textPaint);
@@ -122,34 +115,50 @@ public class LineGraphView extends View {
         // Draw the smoothed line graph
         canvas.drawPath(path, linePaint);
 
-        // Draw X-axis
+        // Draw X-axis inside the view
         canvas.drawLine(0, height, width, height, axisPaint);
 
-        // Draw Y-axis
+        // Draw Y-axis inside the view
         canvas.drawLine(0, 0, 0, height, axisPaint);
 
-        // Draw labels on Y-axis beside data points
-        for (int i = 0; i <= 5; i++) {
-            float priceLabel = (float) (minPrice + i * ((maxPrice - minPrice) / 5));
-            float yLabel = height - i * (height / 5);
+        // Draw X-axis with grid lines and labels inside the chart
+        for (int i = 1; i <= 5; i++) {
+            float xGrid = i * (width / 6);
+            float yGrid = height;
 
-            String formattedLabel = String.format("%.2f", priceLabel);
-            float labelWidth = textPaint.measureText(formattedLabel);
-            canvas.drawText(formattedLabel, -labelWidth - 10, yLabel, textPaint);
+            // Draw grid line
+            canvas.drawLine(xGrid, 0, xGrid, height, axisPaint);
+
+            // Draw label on X-axis inside the chart
+            String xLabel = dataPoints.get(i * dataPoints.size() / 6).getLabel();
+            float labelWidth = textPaint.measureText(xLabel);
+            float labelX = xGrid - labelWidth / 2;
+            float labelY = height + 40;
+            canvas.drawText(xLabel, labelX, labelY, textPaint);
+        }
+
+        // Draw Y-axis with grid lines and labels inside the chart
+        for (int i = 1; i <= 5; i++) {
+            float xGrid = 0;
+            float yGrid = i * (height / 6);
+
+            // Draw grid line
+            canvas.drawLine(xGrid, yGrid, width, yGrid, axisPaint);
+
+            // Draw label on Y-axis inside the chart
+            String yLabel = String.format(Locale.US, "%.2f", minPrice + i * ((maxPrice - minPrice) / 5));
+            float labelWidth = textPaint.measureText(yLabel);
+            float labelX = -labelWidth - 10;
+            float labelY = yGrid + textPaint.getTextSize() / 2;
+            canvas.drawText(yLabel, labelX, labelY, textPaint);
         }
 
         // Draw coin name on top of the chart
-
         float coinNameWidth = titlePaint.measureText(coinName);
         float coinNameX = (width - coinNameWidth) / 2;
         float coinNameY = 80; // Adjust the Y-coordinate as needed
         canvas.drawText(coinName, coinNameX, coinNameY, titlePaint);
     }
-
-
-
-
-
 
     public static class DataPoint {
         public final String label;
