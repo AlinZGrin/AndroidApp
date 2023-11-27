@@ -1,5 +1,4 @@
 package com.example.cryptoprice3;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -34,11 +33,6 @@ public class LineGraphView extends View {
     }
 
     private void init() {
-        linePaint = new Paint();
-        linePaint.setColor(Color.BLUE);
-        linePaint.setStyle(Paint.Style.STROKE);
-        linePaint.setStrokeWidth(10);
-
         textPaint = new Paint();
         textPaint.setColor(Color.LTGRAY);
         textPaint.setTextSize(40);
@@ -52,11 +46,16 @@ public class LineGraphView extends View {
         axisPaint = new Paint();
         axisPaint.setColor(Color.LTGRAY);
         axisPaint.setStrokeWidth(3);
+
+        linePaint = new Paint();
+        linePaint.setStyle(Paint.Style.STROKE);
+        linePaint.setStrokeWidth(7);
     }
 
     public void setDataPoints(List<DataPoint> dataPoints) {
         this.dataPoints = dataPoints;
         calculateMinMaxPrices();
+        determineLineColor(); // Determine line color based on coin prices
         invalidate(); // Trigger redraw when data changes
     }
 
@@ -71,6 +70,22 @@ public class LineGraphView extends View {
                 double price = dataPoint.getValue();
                 minPrice = Math.min(minPrice, price);
                 maxPrice = Math.max(maxPrice, price);
+            }
+        }
+    }
+
+    private void determineLineColor() {
+        if (dataPoints != null && dataPoints.size() >= 2) {
+            double lastPrice = dataPoints.get(dataPoints.size() - 1).getValue();
+            double secondLastPrice = dataPoints.get(dataPoints.size() - 2).getValue();
+
+            if (lastPrice > secondLastPrice) {
+                linePaint.setColor(Color.GREEN);
+            } else if (lastPrice < secondLastPrice) {
+                linePaint.setColor(Color.RED);
+            } else {
+                // Use default color (Blue) or set another color if needed
+                linePaint.setColor(Color.BLUE);
             }
         }
     }
@@ -112,7 +127,7 @@ public class LineGraphView extends View {
             canvas.drawText(label, x - labelWidth / 2, height + 40, textPaint);
         }
 
-        // Draw the smoothed line graph
+        // Draw the smoothed line graph with the determined line color
         canvas.drawPath(path, linePaint);
 
         // Draw X-axis inside the view
