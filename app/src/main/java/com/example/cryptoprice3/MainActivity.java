@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private QuoteLatestResponseModel myResponseModel;
     // Define a callback interface
     private SharedPreferences sharedPreferences;
-    private static final long INTERVAL = 60 * 1000; // 60 seconds in milliseconds
+    private static final long INTERVAL = 45 * 1000; // 60 seconds in milliseconds
     private Handler handler;
 
     @Override
