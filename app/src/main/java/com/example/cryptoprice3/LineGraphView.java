@@ -157,6 +157,7 @@ public class LineGraphView extends View {
         }
 
         // Draw Y-axis with grid lines and labels inside the chart
+        int j=5;
         for (int i = 1; i <= 5; i++) {
             float xGrid = 0;
             float yGrid = i * (height / 6);
@@ -165,7 +166,8 @@ public class LineGraphView extends View {
             canvas.drawLine(xGrid, yGrid, width, yGrid, axisPaint);
 
             // Draw label on Y-axis inside the chart
-            String yLabel = String.format(Locale.US, "%.2f", minPrice + i * ((maxPrice - minPrice) / 5));
+            String yLabel = String.format(Locale.US, "%.2f", minPrice + (j) * ((maxPrice - minPrice) / 5));
+            j=j-1;
             float labelWidth = textPaint.measureText(yLabel);
             float labelX = -labelWidth - 10;
             float labelY = yGrid + textPaint.getTextSize() / 2;
