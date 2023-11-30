@@ -122,9 +122,13 @@ public class LineGraphView extends View {
             path.cubicTo(c1x, c1y, c2x, c2y, x, y);
 
             // Draw labels on X-axis inside the chart
-            String label = dataPoints.get(i).getLabel();
-            float labelWidth = textPaint.measureText(label);
-            canvas.drawText(label, x - labelWidth / 2, height + 40, textPaint);
+            if (i % (dataPoints.size() / 5) == 0) {
+                String label = dataPoints.get(i).getLabel();
+                float labelWidth = textPaint.measureText(label);
+                float labelX = (float) (x - labelWidth / 2 );
+                float labelY = height + 40;
+                canvas.drawText(label, labelX, labelY, textPaint);
+            }
         }
 
         // Draw the smoothed line graph with the determined line color
@@ -149,7 +153,7 @@ public class LineGraphView extends View {
             float labelWidth = textPaint.measureText(xLabel);
             float labelX = xGrid - labelWidth / 2;
             float labelY = height + 40;
-            canvas.drawText(xLabel, labelX, labelY, textPaint);
+            canvas.drawText(xLabel.substring(0, 5), labelX-5, labelY-64, textPaint);
         }
 
         // Draw Y-axis with grid lines and labels inside the chart
@@ -165,7 +169,7 @@ public class LineGraphView extends View {
             float labelWidth = textPaint.measureText(yLabel);
             float labelX = -labelWidth - 10;
             float labelY = yGrid + textPaint.getTextSize() / 2;
-            canvas.drawText(yLabel, labelX, labelY, textPaint);
+            canvas.drawText(yLabel, 0, labelY+15, textPaint);
         }
 
         // Draw coin name on top of the chart
@@ -174,6 +178,8 @@ public class LineGraphView extends View {
         float coinNameY = 80; // Adjust the Y-coordinate as needed
         canvas.drawText(coinName, coinNameX, coinNameY, titlePaint);
     }
+
+
 
     public static class DataPoint {
         public final String label;
