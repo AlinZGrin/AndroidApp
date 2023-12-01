@@ -136,9 +136,11 @@ public class LineGraphView extends View {
 
         // Draw X-axis inside the view
         canvas.drawLine(0, height, width, height, axisPaint);
+        canvas.drawLine(width, height, width, 0, axisPaint);
 
         // Draw Y-axis inside the view
         canvas.drawLine(0, 0, 0, height, axisPaint);
+        canvas.drawLine(1, 1, width, 1, axisPaint);
 
         // Draw X-axis with grid lines and labels inside the chart
         for (int i = 1; i <= 5; i++) {
@@ -154,8 +156,11 @@ public class LineGraphView extends View {
             float labelX = xGrid - labelWidth / 2;
             float labelY = height + 40;
             canvas.drawText(xLabel.substring(0, 5), labelX-5, labelY-64, textPaint);
-        }
 
+
+        }
+        String xLabel = dataPoints.get(dataPoints.size()-1).getLabel();
+        canvas.drawText(xLabel.substring(0, 5), width-110, height-22, textPaint);
         // Draw Y-axis with grid lines and labels inside the chart
         int j=5;
         for (int i = 1; i <= 5; i++) {
@@ -173,7 +178,8 @@ public class LineGraphView extends View {
             float labelY = yGrid + textPaint.getTextSize() / 2;
             canvas.drawText(yLabel, 0, labelY+15, textPaint);
         }
-
+        String yLabel = String.format(Locale.US, "%.2f", maxPrice);
+        canvas.drawText(yLabel, 4, 0+40, textPaint);
         // Draw coin name on top of the chart
         float coinNameWidth = titlePaint.measureText(coinName);
         float coinNameX = (width - coinNameWidth) / 2;
