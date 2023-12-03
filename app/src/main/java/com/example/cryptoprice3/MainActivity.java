@@ -38,6 +38,7 @@ public class MainActivity  extends AppCompatActivity {
     private static final long INTERVAL = 45 * 1000; // 60 seconds in milliseconds
     private Handler handler;
     private MarketChartApiClient marketChartApiClient;
+    private boolean isBTCNameClicked = true;
 
 
     @Override
@@ -81,7 +82,9 @@ public class MainActivity  extends AppCompatActivity {
             ETH24.setTextColor(Color.parseColor("#00FF00"));
         }
         BTCName.performClick();
-        ETHName.performClick();
+        isBTCNameClicked = true;
+        //ETHName.performClick();
+        fetchDataWithMyApiClient();
 
         handler = new Handler();
         handler.post(runnable); // Start the recurring task immediately
@@ -94,8 +97,9 @@ public class MainActivity  extends AppCompatActivity {
         public void run() {
             TextView BTCName = findViewById(R.id.BitconPriceName);
             TextView ETHName = findViewById(R.id.EthPriceName);
-            BTCName.performClick();
-            ETHName.performClick();
+            //BTCName.performClick();
+            //ETHName.performClick();
+            fetchDataWithMyApiClient();
 
             // Restart the task after the interval
             handler.postDelayed(this, INTERVAL);
@@ -112,13 +116,23 @@ public class MainActivity  extends AppCompatActivity {
     public void onBTCNameBtnClick(View view) throws JSONException {
 
 
+        Button dayButton = findViewById(R.id.DayButton);
+        Button weekbutton = findViewById(R.id.WeekButton);
+        Button monthButton = findViewById(R.id.MonthButton);
+        Button yearButton = findViewById(R.id.YearButton);
+        int defaultColor = getResources().getColor(R.color.purple);
+        dayButton.setBackgroundColor(defaultColor);
+        weekbutton.setBackgroundColor(defaultColor);
+        monthButton.setBackgroundColor(defaultColor);
+        yearButton.setBackgroundColor(defaultColor);
+
         marketChartApiClient = new MarketChartApiClient(this);
 
         // Example usage: Fetch Bitcoin data
         fetchDataForBitcoin(30,"daily");
+        isBTCNameClicked = true;
 
-
-        fetchDataWithMyApiClient();
+        //fetchDataWithMyApiClient();
     }
     public void onDayButtonClick(View view) throws JSONException{
         Button dayButton = findViewById(R.id.DayButton);
@@ -130,8 +144,12 @@ public class MainActivity  extends AppCompatActivity {
         weekbutton.setBackgroundColor(defaultColor);
         monthButton.setBackgroundColor(defaultColor);
         yearButton.setBackgroundColor(defaultColor);
-        fetchDataForBitcoin(1,"");
-        fetchDataForEthereum(1,"");
+        if (isBTCNameClicked) {
+            fetchDataForBitcoin(1, "");
+        }
+        else {
+            fetchDataForEthereum(1, "");
+        }
     }
     public void onWeekButtonClick(View view) throws JSONException{
         Button dayButton = findViewById(R.id.DayButton);
@@ -143,8 +161,12 @@ public class MainActivity  extends AppCompatActivity {
         weekbutton.setBackgroundColor(Color.RED);
         monthButton.setBackgroundColor(defaultColor);
         yearButton.setBackgroundColor(defaultColor);
-        fetchDataForBitcoin(7,"daily");
-        fetchDataForEthereum(7,"daily");
+        if (isBTCNameClicked) {
+            fetchDataForBitcoin(7, "daily");
+        }
+        else {
+            fetchDataForEthereum(7, "daily");
+        }
     }
     public void onMonthButtonClick(View view) throws JSONException{
         Button dayButton = findViewById(R.id.DayButton);
@@ -156,8 +178,12 @@ public class MainActivity  extends AppCompatActivity {
         weekbutton.setBackgroundColor(defaultColor);
         monthButton.setBackgroundColor(Color.RED);
         yearButton.setBackgroundColor(defaultColor);
-        fetchDataForBitcoin(30,"daily");
-        fetchDataForEthereum(30,"daily");
+        if (isBTCNameClicked) {
+            fetchDataForBitcoin(30, "daily");
+        }
+        else {
+            fetchDataForEthereum(30, "daily");
+        }
     }
     public void onYearButtonClick(View view) throws JSONException{
         Button dayButton = findViewById(R.id.DayButton);
@@ -169,8 +195,12 @@ public class MainActivity  extends AppCompatActivity {
         weekbutton.setBackgroundColor(defaultColor);
         monthButton.setBackgroundColor(defaultColor);
         yearButton.setBackgroundColor(Color.RED);
-        fetchDataForBitcoin(365,"daily");
-        fetchDataForEthereum(365,"daily");
+        if (isBTCNameClicked) {
+            fetchDataForBitcoin(365, "daily");
+        }
+        else {
+            fetchDataForEthereum(365, "daily");
+        }
     }
     private void fetchDataForBitcoin(int day,String interval) {
         // Define the callback for handling the API response
@@ -223,10 +253,22 @@ public class MainActivity  extends AppCompatActivity {
     }
 
     public void onETHNameBtnClick(View view) throws JSONException {
+
+        Button dayButton = findViewById(R.id.DayButton);
+        Button weekbutton = findViewById(R.id.WeekButton);
+        Button monthButton = findViewById(R.id.MonthButton);
+        Button yearButton = findViewById(R.id.YearButton);
+        int defaultColor = getResources().getColor(R.color.purple);
+        dayButton.setBackgroundColor(defaultColor);
+        weekbutton.setBackgroundColor(defaultColor);
+        monthButton.setBackgroundColor(defaultColor);
+        yearButton.setBackgroundColor(defaultColor);
+
         MarketChartApiClient marketChartApiClient = new MarketChartApiClient(this);
         // Example usage: Fetch Ethereum data
         fetchDataForEthereum(30,"daily");
-        fetchDataWithMyApiClient();
+        //fetchDataWithMyApiClient();
+        isBTCNameClicked = false;
     }
 
     private void fetchDataForEthereum(int day,String interval) {
