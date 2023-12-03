@@ -4,8 +4,8 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-//import androidx.core.net.ParseException;
 
 import org.json.JSONException;
 
@@ -26,9 +25,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.lang.Math;
-
-import android.os.Handler;
 
 public class MainActivity  extends AppCompatActivity {
 
@@ -123,7 +119,7 @@ public class MainActivity  extends AppCompatActivity {
         int defaultColor = getResources().getColor(R.color.purple);
         dayButton.setBackgroundColor(defaultColor);
         weekbutton.setBackgroundColor(defaultColor);
-        monthButton.setBackgroundColor(defaultColor);
+        monthButton.setBackgroundColor(Color.RED);
         yearButton.setBackgroundColor(defaultColor);
 
         marketChartApiClient = new MarketChartApiClient(this);
@@ -261,7 +257,7 @@ public class MainActivity  extends AppCompatActivity {
         int defaultColor = getResources().getColor(R.color.purple);
         dayButton.setBackgroundColor(defaultColor);
         weekbutton.setBackgroundColor(defaultColor);
-        monthButton.setBackgroundColor(defaultColor);
+        monthButton.setBackgroundColor(Color.RED);
         yearButton.setBackgroundColor(defaultColor);
 
         MarketChartApiClient marketChartApiClient = new MarketChartApiClient(this);
