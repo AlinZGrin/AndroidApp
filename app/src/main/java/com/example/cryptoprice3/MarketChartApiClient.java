@@ -30,7 +30,7 @@ public class MarketChartApiClient {
         this.context = context;
     }
     private static final String  baseUrl = "https://api.coingecko.com/api/v3/";
-    public void fetchDataAsync(ChartCallback callback) {
+    public void fetchDataAsyncBTC(ChartCallback callback, int days, String interval) {
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
@@ -40,7 +40,7 @@ public class MarketChartApiClient {
     CoinGeckoApiBitcoin coinGeckoApiBitcoin = retrofit.create(CoinGeckoApiBitcoin.class);
 
     // Make the API call
-    Call<MarketChartApiResponseModel> call = coinGeckoApiBitcoin.getMarketChart("usd", 30, "daily", 2);
+    Call<MarketChartApiResponseModel> call = coinGeckoApiBitcoin.getMarketChart("USD" ,days ,interval, 2);
 
     // Enqueue the call to execute asynchronously
         call.enqueue(new Callback<MarketChartApiResponseModel>() {
@@ -70,7 +70,7 @@ public class MarketChartApiClient {
 }
 
 
-    public void fetchDataAsyncEthereum(ChartCallback callback) {
+    public void fetchDataAsyncEthereum(ChartCallback callback,int days, String interval) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -80,7 +80,7 @@ public class MarketChartApiClient {
         CoinGeckoApiEthereum coinGeckoApiEthereum = retrofit.create(CoinGeckoApiEthereum.class);
 
         // Make the API call
-        Call<MarketChartApiResponseModel> call = coinGeckoApiEthereum.getMarketChart("usd", 30, "daily", 2);
+        Call<MarketChartApiResponseModel> call = coinGeckoApiEthereum.getMarketChart("USD", days, interval, 2);
 
         // Enqueue the call to execute asynchronously
         call.enqueue(new Callback<MarketChartApiResponseModel>() {

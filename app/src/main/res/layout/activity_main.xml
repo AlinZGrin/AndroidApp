@@ -143,5 +143,53 @@
         app:layout_constraintVertical_bias="0.118"
         tools:visibility="visible" />
 
+    <Button
+        android:id="@+id/DayButton"
+        android:layout_width="77dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="49dp"
+        android:layout_marginTop="4dp"
+        android:text="24 H"
+        android:textSize="9dp"
+        android:onClick="onDayButtonClick"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lineGraphView" />
+
+    <Button
+        android:id="@+id/YearButton"
+        android:layout_width="77dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:text="Year"
+        android:textSize="9dp"
+        android:onClick="onYearButtonClick"
+        app:layout_constraintStart_toEndOf="@+id/MonthButton"
+        app:layout_constraintTop_toBottomOf="@+id/lineGraphView" />
+
+    <Button
+        android:id="@+id/MonthButton"
+        android:layout_width="77dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:text="Month"
+        android:textSize="9dp"
+        android:onClick="onMonthButtonClick"
+        app:layout_constraintStart_toEndOf="@+id/WeekButton"
+        app:layout_constraintTop_toBottomOf="@+id/lineGraphView" />
+
+    <Button
+        android:id="@+id/WeekButton"
+        android:layout_width="77dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="4dp"
+        android:text="Week"
+        android:textSize="9dp"
+        android:onClick="onWeekButtonClick"
+        app:layout_constraintStart_toEndOf="@+id/DayButton"
+        app:layout_constraintTop_toBottomOf="@+id/lineGraphView" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
