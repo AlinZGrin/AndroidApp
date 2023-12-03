@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -120,22 +121,54 @@ public class MainActivity  extends AppCompatActivity {
         fetchDataWithMyApiClient();
     }
     public void onDayButtonClick(View view) throws JSONException{
-
+        Button dayButton = findViewById(R.id.DayButton);
+        Button weekbutton = findViewById(R.id.WeekButton);
+        Button monthButton = findViewById(R.id.MonthButton);
+        Button yearButton = findViewById(R.id.YearButton);
+        int defaultColor = getResources().getColor(R.color.purple);
+        dayButton.setBackgroundColor(Color.RED);
+        weekbutton.setBackgroundColor(defaultColor);
+        monthButton.setBackgroundColor(defaultColor);
+        yearButton.setBackgroundColor(defaultColor);
         fetchDataForBitcoin(1,"");
         fetchDataForEthereum(1,"");
     }
     public void onWeekButtonClick(View view) throws JSONException{
-
+        Button dayButton = findViewById(R.id.DayButton);
+        Button weekbutton = findViewById(R.id.WeekButton);
+        Button monthButton = findViewById(R.id.MonthButton);
+        Button yearButton = findViewById(R.id.YearButton);
+        int defaultColor = getResources().getColor(R.color.purple);
+        dayButton.setBackgroundColor(defaultColor);
+        weekbutton.setBackgroundColor(Color.RED);
+        monthButton.setBackgroundColor(defaultColor);
+        yearButton.setBackgroundColor(defaultColor);
         fetchDataForBitcoin(7,"daily");
         fetchDataForEthereum(7,"daily");
     }
     public void onMonthButtonClick(View view) throws JSONException{
-
+        Button dayButton = findViewById(R.id.DayButton);
+        Button weekbutton = findViewById(R.id.WeekButton);
+        Button monthButton = findViewById(R.id.MonthButton);
+        Button yearButton = findViewById(R.id.YearButton);
+        int defaultColor = getResources().getColor(R.color.purple);
+        dayButton.setBackgroundColor(defaultColor);
+        weekbutton.setBackgroundColor(defaultColor);
+        monthButton.setBackgroundColor(Color.RED);
+        yearButton.setBackgroundColor(defaultColor);
         fetchDataForBitcoin(30,"daily");
         fetchDataForEthereum(30,"daily");
     }
     public void onYearButtonClick(View view) throws JSONException{
-
+        Button dayButton = findViewById(R.id.DayButton);
+        Button weekbutton = findViewById(R.id.WeekButton);
+        Button monthButton = findViewById(R.id.MonthButton);
+        Button yearButton = findViewById(R.id.YearButton);
+        int defaultColor = getResources().getColor(R.color.purple);
+        dayButton.setBackgroundColor(defaultColor);
+        weekbutton.setBackgroundColor(defaultColor);
+        monthButton.setBackgroundColor(defaultColor);
+        yearButton.setBackgroundColor(Color.RED);
         fetchDataForBitcoin(365,"daily");
         fetchDataForEthereum(365,"daily");
     }
