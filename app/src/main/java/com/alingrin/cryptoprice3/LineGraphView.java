@@ -1,4 +1,4 @@
-package com.example.cryptoprice3;
+package com.alingrin.cryptoprice3;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;

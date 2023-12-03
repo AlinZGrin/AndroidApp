@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.cryptoprice3"
+    namespace = "com.alingrin.cryptoprice3"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.cryptoprice3"
+        applicationId = "com.alingrin.cryptoprice3"
         minSdk = 24
         targetSdk = 33
         versionCode = 1

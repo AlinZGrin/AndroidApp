@@ -1,4 +1,4 @@
-package com.example.cryptoprice3;
+package com.alingrin.cryptoprice3;
 
 
 

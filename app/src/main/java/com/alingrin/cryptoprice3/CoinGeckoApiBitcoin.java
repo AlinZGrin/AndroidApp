@@ -1,4 +1,4 @@
-package com.example.cryptoprice3;
+package com.alingrin.cryptoprice3;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

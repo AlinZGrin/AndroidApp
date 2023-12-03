@@ -1,4 +1,4 @@
-package com.example.cryptoprice3;
+package com.alingrin.cryptoprice3;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -278,6 +278,7 @@ public class MainActivity  extends AppCompatActivity {
                 List<List<String>> dataPointsOut = new ArrayList<>();
                 LineGraphView lineGraphView = findViewById(R.id.lineGraphView);
                 List<LineGraphView.DataPoint> dataPoints1 = new ArrayList<>();
+
                 for (int i = 0; i < dataPoints.size(); i++) {
                     List<Double> datapoint = dataPoints.get(i);
 

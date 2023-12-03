@@ -127,7 +127,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <!-- Add to your layout XML file -->
-    <com.example.cryptoprice3.LineGraphView
+    <com.alingrin.cryptoprice3.LineGraphView
         android:id="@+id/lineGraphView"
         android:layout_width="300dp"
         android:layout_height="375dp"
