@@ -202,7 +202,8 @@ public class LineGraphView extends View {
         } else if (y > getHeight() - tooltipHeight) {
             y = getHeight() - tooltipHeight;
         }
-
+        if (x>getWidth()) { x = getWidth()-285;}
+        if (y - tooltipHeight<0) {y=90;}
         RectF tooltipRect = new RectF(x, y - tooltipHeight, x + tooltipWidth, y);
         canvas.drawRoundRect(tooltipRect, cornerRadius, cornerRadius, tooltipPaint);
 
