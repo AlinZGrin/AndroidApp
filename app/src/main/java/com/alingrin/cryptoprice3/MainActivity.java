@@ -7,12 +7,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintSet;
 
 import org.json.JSONException;
 
@@ -233,6 +235,7 @@ public class MainActivity  extends AppCompatActivity {
                     }
                     lineGraphView.setDataPoints(dataPoints1);
                     lineGraphView.setCoinName("Bitcoin");
+
 
                 }
 

@@ -4,23 +4,26 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.List;
-import java.util.Locale;
 
 public class LineGraphView extends View {
 
     private List<DataPoint> dataPoints;
     private Paint linePaint;
+    private Paint tooltipPaint;
     private Paint textPaint;
-
     private Paint titlePaint;
     private Paint axisPaint;
     private double minPrice;
     private double maxPrice;
     private String coinName;
+
+    private DataPoint selectedDataPoint;
 
     public LineGraphView(Context context) {
         super(context);
@@ -43,13 +46,20 @@ public class LineGraphView extends View {
         titlePaint.setFakeBoldText(true);
         titlePaint.setTextSize(80);
 
+        linePaint = new Paint();
+        linePaint.setStyle(Paint.Style.STROKE);
+        linePaint.setStrokeWidth(7);
+
+        tooltipPaint = new Paint();
+        tooltipPaint.setColor(Color.BLACK);
+        tooltipPaint.setStyle(Paint.Style.FILL);
+        tooltipPaint.setAlpha(200);
+
         axisPaint = new Paint();
         axisPaint.setColor(Color.LTGRAY);
         axisPaint.setStrokeWidth(3);
 
-        linePaint = new Paint();
-        linePaint.setStyle(Paint.Style.STROKE);
-        linePaint.setStrokeWidth(7);
+        selectedDataPoint = null;
     }
 
     public void setDataPoints(List<DataPoint> dataPoints) {
@@ -61,6 +71,8 @@ public class LineGraphView extends View {
 
     public void setCoinName(String coinName) {
         this.coinName = coinName;
+        selectedDataPoint = null; // Reset the selected data point when coin name changes
+        invalidate(); // Trigger redraw when coin name changes
     }
 
     private void calculateMinMaxPrices() {
@@ -125,7 +137,7 @@ public class LineGraphView extends View {
             if (i % (dataPoints.size() / 5) == 0) {
                 String label = dataPoints.get(i).getLabel();
                 float labelWidth = textPaint.measureText(label);
-                float labelX = (float) (x - labelWidth / 2 );
+                float labelX = (float) (x - labelWidth / 2);
                 float labelY = height + 40;
                 canvas.drawText(label, labelX, labelY, textPaint);
             }
@@ -133,7 +145,7 @@ public class LineGraphView extends View {
 
         // Draw the smoothed line graph with the determined line color
         canvas.drawPath(path, linePaint);
-
+        /*
         // Draw X-axis inside the view
         canvas.drawLine(0, height, width, height, axisPaint);
         canvas.drawLine(width, height, width, 0, axisPaint);
@@ -155,39 +167,89 @@ public class LineGraphView extends View {
             float labelWidth = textPaint.measureText(xLabel);
             float labelX = xGrid - labelWidth / 2;
             float labelY = height + 40;
-            canvas.drawText(xLabel.substring(0, 5), labelX-5, labelY-64, textPaint);
-
-
+            canvas.drawText(xLabel.substring(0, 5), labelX - 5, labelY - 64, textPaint);
         }
-        String xLabel = dataPoints.get(dataPoints.size()-1).getLabel();
-        canvas.drawText(xLabel.substring(0, 5), width-110, height-22, textPaint);
-        // Draw Y-axis with grid lines and labels inside the chart
-        int j=5;
-        for (int i = 1; i <= 7; i++) {
-            float xGrid = 0;
-            float yGrid = i * (height / 8);
-
-            // Draw grid line
-            canvas.drawLine(xGrid, yGrid, width, yGrid, axisPaint);
-
-            // Draw label on Y-axis inside the chart
-            String yLabel = String.format(Locale.US, "%.2f", minPrice + (j) * ((maxPrice - minPrice) / 5));
-            j=j-1;
-            float labelWidth = textPaint.measureText(yLabel);
-            float labelX = -labelWidth - 10;
-            float labelY = yGrid + textPaint.getTextSize() / 2;
-            canvas.drawText(yLabel, 5, labelY-120, textPaint);
-        }
-        //String yLabel = String.format(Locale.US, "%.2f", maxPrice);
-        //canvas.drawText(yLabel, 4, 0+40, textPaint);
+        */
         // Draw coin name on top of the chart
         float coinNameWidth = titlePaint.measureText(coinName);
         float coinNameX = (width - coinNameWidth) / 2;
         float coinNameY = 80; // Adjust the Y-coordinate as needed
         canvas.drawText(coinName, coinNameX, coinNameY, titlePaint);
+
+        // Draw selected data point tooltip
+        if (selectedDataPoint != null) {
+            drawTooltip(canvas, selectedDataPoint, xInterval);
+        }
     }
 
+    private void drawTooltip(Canvas canvas, DataPoint dataPoint, float xInterval) {
+        float x = getXCoordinate(dataPoint, xInterval);
+        float y = getHeight() - (float) ((dataPoint.getValue() - minPrice) * (getHeight() / (maxPrice - minPrice)));
 
+        float tooltipWidth = 285;
+        float tooltipHeight = 90;
+        float cornerRadius = 16;
+
+        // Ensure tooltip stays inside the chart
+        if (x < 0) {
+            x = 0;
+        } else if (x > getWidth() - tooltipWidth) {
+            x = getWidth() - tooltipWidth;
+        }
+
+        if (y < 0) {
+            y = 0;
+        } else if (y > getHeight() - tooltipHeight) {
+            y = getHeight() - tooltipHeight;
+        }
+
+        RectF tooltipRect = new RectF(x, y - tooltipHeight, x + tooltipWidth, y);
+        canvas.drawRoundRect(tooltipRect, cornerRadius, cornerRadius, tooltipPaint);
+
+        // Draw text inside the tooltip
+        String dateLabel = dataPoint.getLabel();
+        String priceLabel = String.format("Price: %.2f", dataPoint.getValue());
+
+        float textX = x + 10;
+        float textY = y - tooltipHeight + 40;
+        canvas.drawText(dateLabel, textX, textY, textPaint);
+        canvas.drawText(priceLabel, textX, textY + 40, textPaint);
+    }
+
+    private float getXCoordinate(DataPoint dataPoint, float xInterval) {
+        for (int i = 0; i < dataPoints.size(); i++) {
+            if (dataPoints.get(i).equals(dataPoint)) {
+                return i * xInterval;
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        float touchX = event.getX();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                selectedDataPoint = findClosestDataPoint(touchX);
+                invalidate();
+                return true;
+            case MotionEvent.ACTION_UP:
+                return true;
+            case MotionEvent.ACTION_CANCEL:
+                selectedDataPoint = null;
+                invalidate();
+                return true;
+        }
+
+        return super.onTouchEvent(event);
+    }
+
+    private DataPoint findClosestDataPoint(float touchX) {
+        float xInterval = getWidth() / (dataPoints.size() - 1);
+        int closestIndex = (int) (touchX / xInterval + 0.5f); // Round to the nearest index
+        closestIndex = Math.max(0, Math.min(closestIndex, dataPoints.size() - 1)); // Ensure it's within bounds
+        return dataPoints.get(closestIndex);
+    }
 
     public static class DataPoint {
         public final String label;
@@ -204,6 +266,27 @@ public class LineGraphView extends View {
 
         public double getValue() {
             return value;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+
+            DataPoint dataPoint = (DataPoint) obj;
+
+            return Double.compare(dataPoint.value, value) == 0 &&
+                    label.equals(dataPoint.label);
+        }
+
+        @Override
+        public int hashCode() {
+            int result;
+            long temp;
+            result = label.hashCode();
+            temp = Double.doubleToLongBits(value);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            return result;
         }
     }
 }
