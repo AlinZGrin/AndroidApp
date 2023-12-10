@@ -2,6 +2,8 @@ package com.alingrin.cryptoprice3;
 import android.content.Context;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -43,15 +45,24 @@ public class MarketChartApiClient {
     // Enqueue the call to execute asynchronously
         call.enqueue(new Callback<MarketChartApiResponseModel>() {
         @Override
-        public void onResponse(Call<MarketChartApiResponseModel> call, Response<MarketChartApiResponseModel> response) {
+        public void onResponse(@NonNull Call<MarketChartApiResponseModel> call, @NonNull Response<MarketChartApiResponseModel> response) {
             if (response.isSuccessful()) {
                 MarketChartApiResponseModel apiResponse = response.body();
                 // Handle the response data here
 
 
+                assert apiResponse != null;
                 System.out.println("Prices: " + apiResponse.getPrices().get(0));
             } else {
                 System.out.println("Request failed. Code: " + response.code());
+                Callback<MarketChartApiResponseModel> context = this;
+                if (response.code() == 429) {
+
+
+                    showToast("Too many requests. Please try again later.");
+                } else {
+                    showToast("An error occurred. Please try again.");
+                }
             }
             if (response.isSuccessful()) {
                 callback.onDataReceived(response.body(), response.code());
@@ -61,7 +72,7 @@ public class MarketChartApiClient {
         }
 
         @Override
-        public void onFailure(Call<MarketChartApiResponseModel> call, Throwable t) {
+        public void onFailure(@NonNull Call<MarketChartApiResponseModel> call, @NonNull Throwable t) {
             System.out.println("Request failed. Error: " + t.getMessage());
         }
     });
@@ -109,11 +120,12 @@ public class MarketChartApiClient {
 
                     }
 
+                    assert apiResponse != null;
                     System.out.println("Prices: " + apiResponse.getPrices().get(0));
                 } else {
                     System.out.println("Request failed. Code: " + response.code());
                     Callback<MarketChartApiResponseModel> context=this;
-                    if (response.code() == 429 && context != null) {
+                    if (response.code() == 429) {
 
 
                             showToast("Too many requests. Please try again later.");
