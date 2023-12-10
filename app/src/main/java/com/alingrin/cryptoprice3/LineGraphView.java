@@ -47,6 +47,7 @@ public class LineGraphView extends View {
                 return true;
 
             case MotionEvent.ACTION_UP:
+                return true;
             case MotionEvent.ACTION_CANCEL:
                 // Reset dot position
                 dotX = -1;
