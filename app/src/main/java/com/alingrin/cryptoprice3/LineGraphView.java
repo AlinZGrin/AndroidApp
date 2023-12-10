@@ -25,6 +25,39 @@ public class LineGraphView extends View {
     private String coinName;
 
     private DataPoint selectedDataPoint;
+    private float dotRadius = 15; // Adjust the dot size as needed
+    private float dotX = -1;
+    private float dotY = -1;
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        float touchX = event.getX();
+        float touchY = event.getY();
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_MOVE:
+                // Track touch position
+                dotX = touchX;
+                dotY = touchY;
+
+                // Find the closest data point to the touch position
+                selectedDataPoint = findClosestDataPoint(touchX);
+                invalidate();
+                return true;
+
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                // Reset dot position
+                dotX = -1;
+                dotY = -1;
+                selectedDataPoint = null;
+                invalidate();
+                return true;
+        }
+
+        return super.onTouchEvent(event);
+    }
 
     public LineGraphView(Context context) {
         super(context);
@@ -160,6 +193,7 @@ public class LineGraphView extends View {
             canvas.drawCircle(dotX, dotY, dotRadius, dotPaint);
         }
 
+
         // Draw coin name on top of the chart
         float coinNameWidth = titlePaint.measureText(coinName);
         float coinNameX = (width - coinNameWidth) / 2;
@@ -216,7 +250,7 @@ public class LineGraphView extends View {
         }
         return 0;
     }
-
+/*
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float touchX = event.getX();
@@ -235,7 +269,7 @@ public class LineGraphView extends View {
 
         return super.onTouchEvent(event);
     }
-
+*/
     private DataPoint findClosestDataPoint(float touchX) {
         float xInterval = getWidth() / (dataPoints.size() - 1);
         int closestIndex = (int) (touchX / xInterval + 0.5f); // Round to the nearest index
