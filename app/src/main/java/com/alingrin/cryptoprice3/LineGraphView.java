@@ -15,6 +15,7 @@ public class LineGraphView extends View {
 
     private List<DataPoint> dataPoints;
     private Paint linePaint;
+    private Paint dotPaint;
     private Paint tooltipPaint;
     private Paint textPaint;
     private Paint titlePaint;
@@ -50,8 +51,12 @@ public class LineGraphView extends View {
         linePaint.setStyle(Paint.Style.STROKE);
         linePaint.setStrokeWidth(7);
 
+        dotPaint = new Paint();
+        dotPaint.setStyle(Paint.Style.STROKE);
+        dotPaint.setStrokeWidth(7);
+
         tooltipPaint = new Paint();
-        tooltipPaint.setColor(Color.BLACK);
+        tooltipPaint.setColor(Color.TRANSPARENT);
         tooltipPaint.setStyle(Paint.Style.FILL);
         tooltipPaint.setAlpha(200);
 
@@ -145,31 +150,16 @@ public class LineGraphView extends View {
 
         // Draw the smoothed line graph with the determined line color
         canvas.drawPath(path, linePaint);
-        /*
-        // Draw X-axis inside the view
-        canvas.drawLine(0, height, width, height, axisPaint);
-        canvas.drawLine(width, height, width, 0, axisPaint);
 
-        // Draw Y-axis inside the view
-        canvas.drawLine(0, 0, 0, height, axisPaint);
-        canvas.drawLine(1, 1, width, 1, axisPaint);
-
-        // Draw X-axis with grid lines and labels inside the chart
-        for (int i = 1; i <= 5; i++) {
-            float xGrid = i * (width / 6);
-            float yGrid = height;
-
-            // Draw grid line
-            canvas.drawLine(xGrid, 0, xGrid, height, axisPaint);
-
-            // Draw label on X-axis inside the chart
-            String xLabel = dataPoints.get(i * dataPoints.size() / 6).getLabel();
-            float labelWidth = textPaint.measureText(xLabel);
-            float labelX = xGrid - labelWidth / 2;
-            float labelY = height + 40;
-            canvas.drawText(xLabel.substring(0, 5), labelX - 5, labelY - 64, textPaint);
+        // Draw blue dot at the selected data point
+        if (selectedDataPoint != null) {
+            float dotRadius = 10;
+            float dotX = getXCoordinate(selectedDataPoint, xInterval);
+            float dotY = getHeight() - (float) ((selectedDataPoint.getValue() - minPrice) * (getHeight() / (maxPrice - minPrice)));
+            dotPaint.setColor(Color.BLUE);
+            canvas.drawCircle(dotX, dotY, dotRadius, dotPaint);
         }
-        */
+
         // Draw coin name on top of the chart
         float coinNameWidth = titlePaint.measureText(coinName);
         float coinNameX = (width - coinNameWidth) / 2;
@@ -204,6 +194,7 @@ public class LineGraphView extends View {
         }
         if (x>getWidth()) { x = getWidth()-285;}
         if (y - tooltipHeight<0) {y=90;}
+
         RectF tooltipRect = new RectF(x, y - tooltipHeight, x + tooltipWidth, y);
         canvas.drawRoundRect(tooltipRect, cornerRadius, cornerRadius, tooltipPaint);
 
