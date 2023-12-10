@@ -53,12 +53,12 @@ public class LineGraphView extends View {
 
         dotPaint = new Paint();
         dotPaint.setStyle(Paint.Style.STROKE);
-        dotPaint.setStrokeWidth(7);
+        dotPaint.setStrokeWidth(11);
 
         tooltipPaint = new Paint();
         tooltipPaint.setColor(Color.TRANSPARENT);
         tooltipPaint.setStyle(Paint.Style.FILL);
-        tooltipPaint.setAlpha(200);
+        tooltipPaint.setAlpha(70);
 
         axisPaint = new Paint();
         axisPaint.setColor(Color.LTGRAY);
