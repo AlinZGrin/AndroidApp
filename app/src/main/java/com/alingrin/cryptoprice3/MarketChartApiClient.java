@@ -40,7 +40,7 @@ public class MarketChartApiClient {
     CoinGeckoApiBitcoin coinGeckoApiBitcoin = retrofit.create(CoinGeckoApiBitcoin.class);
 
     // Make the API call
-    Call<MarketChartApiResponseModel> call = coinGeckoApiBitcoin.getMarketChart("USD" ,days ,interval, 2);
+    Call<MarketChartApiResponseModel> call = coinGeckoApiBitcoin.getMarketChart("USD", days ,interval, 2);
 
     // Enqueue the call to execute asynchronously
         call.enqueue(new Callback<MarketChartApiResponseModel>() {
