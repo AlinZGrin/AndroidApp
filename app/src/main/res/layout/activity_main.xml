@@ -150,7 +150,8 @@
         android:layout_marginStart="49dp"
         android:layout_marginTop="4dp"
         android:text="24 H"
-        android:textSize="9dp"
+        android:textSize="9sp"
+        android:textColor="@color/white"
         android:onClick="onDayButtonClick"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lineGraphView" />
@@ -162,7 +163,8 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:text="Year"
-        android:textSize="9dp"
+        android:textSize="9sp"
+        android:textColor="@color/white"
         android:onClick="onYearButtonClick"
         app:layout_constraintStart_toEndOf="@+id/MonthButton"
         app:layout_constraintTop_toBottomOf="@+id/lineGraphView" />
@@ -174,7 +176,8 @@
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
         android:text="Month"
-        android:textSize="9dp"
+        android:textSize="9sp"
+        android:textColor="@color/white"
         android:onClick="onMonthButtonClick"
         app:layout_constraintStart_toEndOf="@+id/WeekButton"
         app:layout_constraintTop_toBottomOf="@+id/lineGraphView" />
@@ -186,7 +189,8 @@
         android:layout_marginStart="1dp"
         android:layout_marginTop="4dp"
         android:text="Week"
-        android:textSize="9dp"
+        android:textSize="9sp"
+        android:textColor="@color/white"
         android:onClick="onWeekButtonClick"
         app:layout_constraintStart_toEndOf="@+id/DayButton"
         app:layout_constraintTop_toBottomOf="@+id/lineGraphView" />
