@@ -2,8 +2,11 @@ package com.alingrin.cryptoprice3;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -11,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,6 +41,9 @@ public class MainActivity  extends AppCompatActivity {
     private Handler handler;
     private MarketChartApiClient marketChartApiClient;
     private boolean isBTCNameClicked = true;
+    private PriceNotificationService notificationService;
+    private double lastBitcoinPrice = 0;
+    private double lastEthereumPrice = 0;
 
 
     @Override
@@ -45,6 +52,10 @@ public class MainActivity  extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //SwipeRefreshLayout swipeRefreshLayout = findViewById(R.id.CryptoPrice);
         //swipeRefreshLayout.setOnRefreshListener(this);
+
+        // Request notification permission
+        requestNotificationPermission();
+
         sharedPreferences = getPreferences(Context.MODE_PRIVATE);
 
         String initialBtcName = sharedPreferences.getString("btcName", "Bitcoin");
@@ -87,8 +98,47 @@ public class MainActivity  extends AppCompatActivity {
         handler = new Handler();
         handler.post(runnable); // Start the recurring task immediately
 
+        // Initialize notification service
+        notificationService = new PriceNotificationService(this);
+
+        // Set up settings button click listener
+        ImageButton settingsButton = findViewById(R.id.settingsButton);
+        settingsButton.setOnClickListener(v -> onSettingsButtonClick(v));
+
     }
 
+    private void requestNotificationPermission() {
+        // For Android 13 (API 33) and above
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // Check if permission is not granted
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "Notification permission not granted, requesting...");
+                // Request the permission
+                requestPermissions(
+                    new String[]{android.Manifest.permission.POST_NOTIFICATIONS},
+                    100  // Request code
+                );
+            } else {
+                Log.d(TAG, "Notification permission already granted");
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 100) {  // Notification permission request
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "Notification permission granted");
+                // Permission granted, initialize notification service
+                if (notificationService == null) {
+                    notificationService = new PriceNotificationService(this);
+                }
+            } else {
+                Log.d(TAG, "Notification permission denied");
+            }
+        }
+    }
 
     Runnable runnable = new Runnable() {
         @Override
@@ -327,8 +377,6 @@ public class MainActivity  extends AppCompatActivity {
         myApiClient.fetchDataAsync(new MyCallback() {
             @Override
             public void onDataReceived(QuoteLatestResponseModel data, int code) {
-
-
                 Log.d(TAG, "API Response: " + code);
                 TextView BTCName = findViewById(R.id.BitconPriceName);
                 TextView ETHName = findViewById(R.id.EthPriceName);
@@ -389,6 +437,8 @@ public class MainActivity  extends AppCompatActivity {
                 editor.putFloat("eth24Change", (float) eth24c);
                 editor.apply();
 
+                // Add price change check
+                checkPriceChanges(data);
             }
 
             private void animatePriceChange(float finalPrice, float initialPrice, TextView
@@ -416,6 +466,28 @@ public class MainActivity  extends AppCompatActivity {
 
 
         });
+    }
+
+    public void onSettingsButtonClick(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    private void checkPriceChanges(QuoteLatestResponseModel data) {
+        if (data != null && data.getData() != null) {
+            for (Map.Entry<String, QuoteLatestResponseModel.CryptoCurrency> entry : data.getData().entrySet()) {
+                QuoteLatestResponseModel.CryptoCurrency cryptoData = entry.getValue();
+                double currentPrice = cryptoData.getQuote().getUSD().getPrice();
+                
+                if (entry.getKey().equals("1")) { // Bitcoin
+                    notificationService.checkPriceChange("bitcoin", currentPrice, lastBitcoinPrice);
+                    lastBitcoinPrice = currentPrice;
+                } else if (entry.getKey().equals("1027")) { // Ethereum
+                    notificationService.checkPriceChange("ethereum", currentPrice, lastEthereumPrice);
+                    lastEthereumPrice = currentPrice;
+                }
+            }
+        }
     }
 }
 
