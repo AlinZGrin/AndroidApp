@@ -13,7 +13,8 @@ import androidx.core.app.NotificationManagerCompat;
 
 public class PriceNotificationService {
     private static final String CHANNEL_ID = "price_alerts";
-    private static final int NOTIFICATION_ID = 1;
+    private static final int BITCOIN_NOTIFICATION_ID = 1;
+    private static final int ETHEREUM_NOTIFICATION_ID = 2;
     private final Context context;
     private final SharedPreferences sharedPreferences;
     private double lastBitcoinPrice = 0;
@@ -77,6 +78,8 @@ public class PriceNotificationService {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
+        int notificationId = coin.equals("bitcoin") ? BITCOIN_NOTIFICATION_ID : ETHEREUM_NOTIFICATION_ID;
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(coin.toUpperCase() + " Price Alert")
@@ -86,6 +89,6 @@ public class PriceNotificationService {
             .setContentIntent(pendingIntent);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
+        notificationManager.notify(notificationId, builder.build());
     }
 } 
