@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "460950660657",
+    "project_id": "cryptoprice3-be9ac",
+    "storage_bucket": "cryptoprice3-be9ac.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:460950660657:android:c96644e18ecf8fa5859710",
+        "android_client_info": {
+          "package_name": "com.alingrin.cryptoprice3"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqB6AH8rxZe5jZ9Mcm4F0J6XO_NraMjWI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

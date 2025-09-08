@@ -20,6 +20,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintSet;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import org.json.JSONException;
 
 import java.time.Instant;
@@ -104,6 +106,9 @@ public class MainActivity  extends AppCompatActivity {
         // Set up settings button click listener
         ImageButton settingsButton = findViewById(R.id.settingsButton);
         settingsButton.setOnClickListener(v -> onSettingsButtonClick(v));
+
+        // Get FCM token
+        getFCMToken();
 
     }
 
@@ -488,6 +493,32 @@ public class MainActivity  extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void getFCMToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                        return;
+                    }
+
+                    // Get new FCM registration token
+                    String token = task.getResult();
+
+                    // Log and display the token
+                    Log.d(TAG, "FCM Registration Token: " + token);
+                    
+                    // Display token in a toast for easy viewing
+                    // runOnUiThread(() -> {
+                    //     android.widget.Toast.makeText(MainActivity.this, 
+                    //         "FCM Token copied to logs. Check Android Studio Logcat for: " + token.substring(0, 20) + "...", 
+                    //         android.widget.Toast.LENGTH_LONG).show();
+                    // });
+                    
+                    // Optional: Send token to your server
+                    // sendTokenToServer(token);
+                });
     }
 }
 
